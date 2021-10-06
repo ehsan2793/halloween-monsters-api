@@ -1,4 +1,5 @@
 const { getById } = require('./monster-model');
+const monsterSchema = require('../../services/monster-schema');
 
 const checkId = async (req, res, next) => {
     try {
@@ -16,7 +17,13 @@ const checkId = async (req, res, next) => {
     }
 };
 const checkpayload = async (req, res, next) => {
-    next();
+    try {
+        const validPayload = await monsterSchema.validate(req.body);
+        req.body = validPayload;
+        next();
+    } catch (error) {
+        next(error);
+    }
 };
 const monsterIsUnique = async (req, res, next) => {
     next();
