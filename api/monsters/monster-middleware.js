@@ -1,4 +1,4 @@
-const { getById, getAll } = require('./monster-model');
+const { getById, checkName } = require('./monster-model');
 const monsterSchema = require('../../services/monster-schema');
 
 const checkId = async (req, res, next) => {
@@ -27,17 +27,16 @@ const checkpayload = async (req, res, next) => {
 };
 const monsterIsUnique = async (req, res, next) => {
     try {
-        const allMonsters = await getAll()
-        const doesExist = allMonsters.some((monster) => monster.Monster_name === req.body.Monster_name)
-        if (doesExist) {
-            next({
-                status: 400,
-                message: 'monster with the name of does Exist'
-            });
-        } else {
+        const nameExist = await checkName(req.body.Monster_name);
+        if (nameExist === undefined) {
             next();
-        }
 
+        } else {
+            next({
+                status: 404,
+                message: `Monster with the name of ${req.body.Monster_name} exist `,
+            });
+        }
     } catch (error) {
         next(error);
     }

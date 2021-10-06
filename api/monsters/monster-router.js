@@ -32,10 +32,20 @@ router.delete('/:id', checkId, async (req, res) => {
     res.status(200).json(deletedMonster);
 });
 
+router.delete('/deletAll/:id', checkId, async (req, res, next) => {
+    try {
+        const deleteGroupMonsters = await mb.groupDelete(req.params.id);
+        res.status(200).json(deleteGroupMonsters);
+    } catch (error) {
+        next();
+    }
+});
+
 //eslint-disable-next-line
 router.use('*', (err, req, res, next) => {
     res.status(err.status || 500).json({
         message: err.message ? err.message : 'something went wrong',
     });
 });
+
 module.exports = router;
