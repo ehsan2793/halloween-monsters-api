@@ -21,8 +21,12 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
     const updatedMonster = await mb.updateById(req.params.id, req.body);
     res.status(200).json(updatedMonster);
-})
+});
 
+router.delete('/:id', async (req, res) => {
+    const deletedMonster = await mb.removeById(req.params.id);
+    res.status(200).json(deletedMonster);
+});
 
 //eslint-disable-next-line
 router.use('*', (err, req, res, next) => {
