@@ -9,7 +9,10 @@ router.get('/', async (req, res) => {
     res.status(200).json(allMonsters)
 })
 
-
+router.get('/:id', async (req, res) => {
+    const monster = await mb.getById(req.params.id)
+    res.status(200).json(monster)
+})
 
 
 
